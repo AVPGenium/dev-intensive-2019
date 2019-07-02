@@ -30,4 +30,62 @@ object Utils {
         }
         return firstName to lastName
     }
+
+    /**
+     * Преобразует полные Имя-Фамилия в инициалы
+     * @param firstName имя
+     * @param lastName фамилия
+     * @return инициалы
+     */
+    fun toInitials(firstName: String?, lastName: String?): String? {
+        return when {
+            firstName.isNullOrBlank() && lastName.isNullOrBlank() -> null
+            firstName.isNullOrBlank() -> "${lastName?.get(0)}".toUpperCase()
+            lastName.isNullOrBlank() -> "${firstName[0]}".toUpperCase()
+            else -> "${firstName[0]}${lastName[0]}".toUpperCase()
+        }
+    }
+
+    /**
+     * Преобразование строки из русских букв в строку с английскими буквами
+     * @param payload исходная строка для преобразования
+     * @param divider разделитель (по умолчанию пробел)
+     * @return строка из английских символов
+     */
+    fun transliteration(payload: String, divider: String = " ") = payload.map {
+        val isUpper = it.isUpperCase()
+        val transLetter = when (it.toLowerCase()) {
+            'а' -> "a"
+            'б' -> "b"
+            'в' -> "v"
+            'г' -> "g"
+            'д' -> "d"
+            'е', 'ё', 'э' -> "e"
+            'ж' -> "zh"
+            'з' -> "z"
+            'и', 'й', 'ы' -> "i"
+            'к' -> "k"
+            'л' -> "l"
+            'м' -> "m"
+            'н' -> "n"
+            'о' -> "o"
+            'п' -> "p"
+            'р' -> "r"
+            'с' -> "s"
+            'т' -> "t"
+            'у' -> "u"
+            'ф' -> "f"
+            'х' -> "h"
+            'ц' -> "c"
+            'ч' -> "ch"
+            'ш' -> "sh"
+            'щ' -> "shch"
+            'ъ', 'ь' -> ""
+            'ю' -> "yu"
+            'я' -> "ya"
+            ' ' -> divider
+            else -> "$it"
+        }
+        if (isUpper) transLetter.capitalize() else transLetter
+    }.joinToString("")
 }
